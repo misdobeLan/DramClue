@@ -6,12 +6,137 @@
     <title>ETF Insight Platform - {{ data.etf.name }}</title>
     <!-- Link to global styles defined in SPEC.md -->
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+        /* Additional styling for the ETF Insight Platform matching openclue.net design */
+        .etf-meta-header {
+            background: var(--primary);
+            color: #fff;
+            padding: var(--spacing);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .etf-meta-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: var(--container);
+        }
+        .etf-meta-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--accent);
+        }
+        .ticker-info {
+            font-size: 1rem;
+            color: #d1d1d1;
+        }
+        nav {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--secondary);
+        }
+        main {
+            padding: var(--spacing);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing);
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .card {
+            background: var(--neutral);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-body {
+            padding: 0.75rem;
+        }
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+        .card-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .badge {
+            background: var(--secondary);
+            color: #fff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        table.table-striped {
+            background: #fff;
+            border-collapse: collapse;
+        }
+        table.table-striped td {
+            border-bottom: 1px solid #ddd;
+        }
+        @media (max-width: 576px) {
+            .etf-meta-header {
+                flex-direction: column;
+            }
+            nav {
+                flex-wrap: wrap;
+            }
+        }
+        @media (min-width: 576px) and (max-width: 992px) {
+            .etf-meta-header {
+                flex-wrap: wrap;
+            }
+        }
+        @media (min-width: 992px) {
+            .etf-meta-header {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
     <!-- Chart.js library (must be included for the visualization component) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-primary">
 
     <header class="etf-meta-header">
+        <div class="container">
+            <h1>{{ data.etf.name }}</h1>
+            <p class="ticker-info">Ticker: <strong>{{ data.etf.ticker }}</strong> | 类别：{{ data.etf.daily_insight.thesis }}</p>
+        </div>
+        <nav>
+            <a href="#">首页</a>
+            <a href="#">报告</a>
+            <a href="#">社区</a>
+            <a href="#">关于</a>
+        </nav>
+    </header>
         <div class="container">
             <h1>{{ data.etf.name }}</h1>
             <p class="ticker-info">Ticker: <strong>{{ data.etf.ticker }}</strong> | 类别: {{ data.etf.daily_insight.thesis }}</p>

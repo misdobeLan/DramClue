@@ -1,7 +1,8 @@
 from flask import Flask, render_template, jsonify
 from services.data_service import DataService
+# ... rest of the imports
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='assets')
 data_service = DataService()
 
 @app.route('/')

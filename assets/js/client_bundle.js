@@ -103,7 +103,11 @@ function renderPriceChart(marketData) {
             labels: ['本周初', '本周中', '今日'], // Placeholder labels
             datasets: [{
                 label: '价格走势',
-                data: [110, 115, ${marketData.price}], // Use the live data
+                data: [
+                    110,
+                    115,
+                    marketData.price // Use the live data directly
+                ], // Use the live data
                 borderColor: 'rgba(75, 192, 192, 1)',
                 fill: false
             }]
