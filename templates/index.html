@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF Insight Platform - {{ data.etf.name }}</title>
+    <!-- Link to global styles defined in SPEC.md -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <!-- Chart.js library (must be included for the visualization component) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-primary">
+
+    <header class="etf-meta-header">
+        <div class="container">
+            <h1>{{ data.etf.name }}</h1>
+            <p class="ticker-info">Ticker: <strong>{{ data.etf.ticker }}</strong> | 类别: {{ data.etf.daily_insight.thesis }}</p>
+        </div>
+    </header>
+
+    <main class="container mt-5">
+
+        <!-- 1. Daily Insight Section (SPEC.md: Daily Insight Block) -->
+        <section id="daily-insight" class="card shadow-lg mb-5">
+            <div class="card-body">
+                <h3>📈 核心观点洞察</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="badge sentiment-{{ data.etf.daily_insight.sentiment }}">{{ data.etf.daily_insight.sentiment }}</span>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="lead">{{ data.etf.daily_insight.thesis }}</p>
+                        <p>深入分析: 市场正在...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Metrics Grid Section (SPEC.md: Metrics Grid) -->
+        <section id="market-section" class="mb-5">
+            <h2 class="section-title">📊 关键量化指标</h2>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="metrics-grid">
+                <!-- Template loop for dynamic metrics -->
+                <div class="col">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>实时价格 (Price)</h5>
+                        <h2 id="price">{{ data.market.price }}</h2>
+                        <small>今日涨跌幅</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>净值 (NAV)</h5>
+                        <h2 id="nav">{{ data.market.nav }}</h2>
+                        <small>基准净值</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>YTD 表现</h5>
+                        <h2 id="ytd">{{ data.market.ytd_return }}</h2>
+                        <small>年初至今回报</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>动量指数</h5>
+                        <h2 id="momentum">{{ data.market.momentum }}</h2>
+                        <small>短期趋势分析</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Chart Container Section (SPEC.md: Chart Container) -->
+        <section id="chart-container" class="mb-5">
+            <h2 class="section-title">📈 观点与价格演化图表</h2>
+            <div class="row">
+                <!-- Chart 1: Insight Chart (Scatter Plot) -->
+                <div class="col-md-6 mb-3">
+                    <canvas id="insightChart" height="300"></canvas>
+                </div>
+                <!-- Chart 2: Price Chart (Line Plot) -->
+                <div class="col-md-6 mb-3">
+                    <canvas id="priceChart" height="300"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Holdings Table Section (SPEC.md: Holdings Table) -->
+        <section id="holdings-section" class="mb-5">
+            <h2 class="section-title">💼 ETF持仓分布 (Holdings)</h2>
+            <table class="table table-striped" id="holdings-table">
+                <thead>
+                    <tr>
+                        <th>指数</th>
+                        <th>权重 (%)</th>
+                        <th>表现</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated here by JS using data.etf.holdings -->
+                    <tr>
+                        <td>AAPL</td>
+                        <td>25%</td>
+                        <td class="text-success">上涨</td>
+                    </tr>
+                    <tr>
+                        <td>MSFT</td>
+                        <td>20%</td>
+                        <td class="text-success">上涨</td>
+                    </tr>
+                    <tr>
+                        <td>GOOGL</td>
+                        <td>15%</td>
+                        <td class="text-danger">下跌</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 5. News/Insights Feed (SPEC.md: NewsFeed) -->
+        <section id="news-feed" class="mb-5">
+            <h2 class="section-title">📰 最新观点及新闻快讯</h2>
+            <div id="news-feed-list" class="row g-4">
+                {% for insight in data.insights %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">观点: {{ insight.type }}</h5>
+                            <p class="card-text">{{ insight.thesis }}</p>
+                            <small class="text-muted">发布时间: {{ insight.timestamp }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript bundle (Simulating main.js, data.js, components.js) -->
+    <script src="/assets/js/client_bundle.js"></script>
+
+    <script>
+        // JavaScript client-side initialization logic
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Initialize Charts
+            const initCharts();
+
+            // 2. Process and display complex components
+            initializeHoldingsTable();
+
+            // 3. Fetch any missing data or submit forms (if applicable)
+            fetchAndRender();
+        });
+    </script>
+</body>
+</html>
